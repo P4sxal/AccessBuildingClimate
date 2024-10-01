@@ -9,6 +9,11 @@ https://sensirion.com/products/catalog/SHT30-DIS-B
 
 A custom PCB was designed to read the sensor from a raspberry zero w.
 
+## Sensor Software
+
+The sensor is read via the I2C bus using a python script.
+
+
 ## Server API
 
 to be written down.
