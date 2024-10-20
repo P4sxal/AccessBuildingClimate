@@ -1,0 +1,3 @@
+*/10 * * * * /home/pi/Desktop/readTempHum.sh >/dev/null 2>&1
+
+//rose/OfficeLog        /mnt/officelog  cifs    username=rasp8,password=P,uid=pi,gid=pi,_netdev,x-systemd.automount,nofail
