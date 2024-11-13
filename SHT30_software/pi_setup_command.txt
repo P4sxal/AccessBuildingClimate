@@ -1,0 +1,15 @@
+
+#Log the temperatures using the SHT30 dongle
+#the scripts executs a python script to read the SHT30 dongle ech 10
+
+#first, check the shell and python scripts
+#can be executed with "./logClimaWithDongle.sh"
+#python script: "py dongleSHT30.py"
+
+#crontab, use "crontab -e"
+*/10 * * * * /home/pi/Desktop/readTempHum.sh >/dev/null 2>&1
+
+
+#mount a SMB directory cor coping files with fstab
+#/etc/fstab
+//rose/OfficeLog        /mnt/officelog  cifs    username=rasp8,password=P,uid=pi,gid=pi,_netdev,x-systemd.automount,nofail

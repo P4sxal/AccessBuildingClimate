@@ -13,6 +13,13 @@ from time import sleep, ctime, time
 from os import uname
 import json
 
+#which dongle can be selected by args
+import argparse
+
+parser = argparse.ArgumentParser(description='''SHT30dongle interface''')
+parser.add_argument("-st",dest="sensortype",default="wired",help="'wired' or 'dongle', default 'wired'")
+args=parser.parse_args()
+
 # define the colors
 class SHT30_dongle():
     """
@@ -23,12 +30,20 @@ class SHT30_dongle():
     Included are CAE, CAD and gerber files. 
     SHT30 address, 0x45(68), per default.
     """
-    def __init__(self,smbus_adress = 1, i2c_address = 0x45):
+    def __init__(self,smbus_adress = 1):
+        
+        if args.sensortype == 'wired':
+            __i2c_address = 0x45
+        elif args.sensortype == 'dongle':
+            __i2c_address = 0x44
+        else:
+            raise Exception("Sensortype not found")
+        
         self._green = LED(14, active_high = False)
         self._yellow = LED(15, active_high = False)
         self._red = LED(18, active_high = False)
         self._bus = smbus.SMBus(smbus_adress)
-        self._i2c_address = i2c_address
+        self._i2c_address = __i2c_address
         self._update_temp_hum()
             
     def log_clima(self):
@@ -101,3 +116,4 @@ class SHT30_dongle():
 if __name__ == "__main__":
     sensor=SHT30_dongle()
     sensor.led_blink()
+    print(sensor.log_clima())
