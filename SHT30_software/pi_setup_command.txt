@@ -1,6 +1,6 @@
 
 #Log the temperatures using the SHT30 dongle
-#the scripts executs a python script to read the SHT30 dongle ech 10
+#the scripts executes a python script to read the SHT30 dongle each 10
 
 #first, check the shell and python scripts
 #can be executed with "./logClimaWithDongle.sh"
@@ -13,3 +13,68 @@
 #mount a SMB directory cor coping files with fstab
 #/etc/fstab
 //rose/OfficeLog        /mnt/officelog  cifs    username=rasp8,password=P,uid=pi,gid=pi,_netdev,x-systemd.automount,nofail
+
+
+#create new user
+sudo adduser --system mydongle
+
+#copy SHT30_Software and change userrights
+sudo cp -r SHT30_software/ /home/mydongle/
+sudo chown -R mydongle SHT30_Software
+
+#write the service unit
+vi mydongle.service
+
+#copy it to be usable by systemd
+sudo cp mydongle.service /etc/systemd/system
+sudo systemctl daemon-reload
+sudo systemctl enable mydongle.service
+sudo systemctl start mydongle.service
+
+## mydongle.service
+## -------
+[Unit]
+Description=Dongle Software
+After=network-online.target
+
+[Service]
+User=mydongle
+Type=exec
+ExecStart= /usr/bin/python3 /home/mydongle/SHT30_software/dongleSHT30.py
+StandardOutput=append:/home/mydongle/log11.log
+#StandardError=journal
+Restart=no
+
+[Install]
+WantedBy=default.target
+## -------
+
+## -------
+## mydongle.timer
+pi@raspberryzero4:~/Desktop $ less mydongle.timer 
+
+[Unit]
+Description= "timer for logging mydongle"
+
+[Timer]
+#OnBootSec=5min
+OnUnitActiveSec=9min
+#OnCalendar=Mon..Fri *-*-* *:03:*
+Unit=mydongle.service
+
+[Install]
+WantedBy=multi-user.target
+## ------
+
+
+#to access the gpio of raspberry, add user to group
+# --- show error message here ---
+sudo adduser mydongle gpio
+
+#now lets write a timer for each x min
+sudo cp mydongle.timer /etc/systemd/system
+sudo systemctl enable mydongle.timer
+sudo systemctl start mydongle.timer
+
+#lets observe the logs
+
