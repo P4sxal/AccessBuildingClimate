@@ -9,6 +9,10 @@ https://sensirion.com/products/catalog/SHT30-DIS-B
 
 A custom PCB was designed to read the sensor from a raspberry zero w.
 
+SHT30 dongle:
+
+<img alt="SHT30Dongle" src="SHT30_sensor/SHT_Dongle_1.jpeg" width="300">
+
 ## Sensor Software
 
 The sensor is read via the I2C bus using a python script.
