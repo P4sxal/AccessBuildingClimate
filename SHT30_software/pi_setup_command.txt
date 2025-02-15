@@ -7,12 +7,27 @@
 #python script: "py dongleSHT30.py"
 
 #crontab, use "crontab -e"
-*/10 * * * * /home/pi/Desktop/readTempHum.sh >/dev/null 2>&1
+#*/10 * * * * /home/pi/Desktop/readTempHum.sh >/dev/null 2>&1
+
+# ----
+# how to install:
+
+# mount a SMB directory for coping files with fstab
+# /etc/fstab
+# //rose/OfficeLog        /mnt/officelog  cifs    username=rasp8,password=P,uid=pi,gid=pi,_netdev,x-systemd.automount,nofail
+
+#use sftp to transfer files to target device
+# put SHT30_Software
+# put setup.sh
+
+# change permissions on setup.sh
+chmod +x setup.sh
 
 
-#mount a SMB directory cor coping files with fstab
-#/etc/fstab
-//rose/OfficeLog        /mnt/officelog  cifs    username=rasp8,password=P,uid=pi,gid=pi,_netdev,x-systemd.automount,nofail
+#-------------------
+#-------------------
+#-------------------
+
 
 
 #create new user
@@ -68,8 +83,11 @@ WantedBy=multi-user.target
 
 
 #to access the gpio of raspberry, add user to group
-# --- show error message here ---
-sudo adduser mydongle gpio
+# Error: "RuntimeError: No access to /dev/mem" from gpio
+# more Error: "self._bus = smbus.SMBus(smbus_adress)
+#                ^^^^^^^^^^^^^^^^^^^^^^^^^
+# PermissionError: [Errno 13] Permission denied
+sudo adduser mydongle gpio i2c
 
 #now lets write a timer for each x min
 sudo cp mydongle.timer /etc/systemd/system
