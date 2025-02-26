@@ -20,9 +20,24 @@ SHT30 dongle:
 
 ## Sensor Software
 
-The sensor is read via the I2C bus using a python script.
+The sensor is read via the I2C bus using a python script.  
+The dongle features 3 status LED (red, green and orange).  
+A systemd service and timer unit are logging the data as a separated, dedicated system user (mydongle).  
+Data is written to a sambda drive, then copyed to local NAS an visualized using a webserver (other project).
 
 
-## Server API
+## Usage
 
-to be written down.
+Copy `SHT30_software` and `setup.sh` to your Raspberry with attached dongle.  
+Run `chmod +X setup.sh`, then `sudo ./setup.sh` to finish installation.
+The device will start logging climatic data.  
+Verify the running service:  
+`systemctl status mydongle.service` or `systemctl status mydongle.timer`  
+
+```
+{"time": "Mon Feb 24 11:22:41 2025", "temperature": 14.16, "humidity": 59.68, "timestamp": 1740392561.3886838, "hostname": "cellar"}
+```
+That's it.
+
+---
+written by P4sxal 2024-2025
