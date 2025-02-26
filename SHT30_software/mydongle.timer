@@ -2,7 +2,7 @@
 Description= "timer for logging mydongle"
 
 [Timer]
-#OnBootSec=5min
+OnBootSec=5min
 OnUnitActiveSec=9min
 #OnCalendar=Mon..Fri *-*-* *:03:*
 Unit=mydongle.service

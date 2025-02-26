@@ -7,7 +7,7 @@ User=mydongle
 Type=exec
 WorkingDirectory=/home/mydongle/
 ExecStart= /usr/bin/python3 /home/mydongle/dongleSHT30.py
-StandardOutput=append:/mnt/officelog/%H.log
+StandardOutput=append:/mnt/officelog/%H.txt
 #StandardError=journal
 Restart=no
 

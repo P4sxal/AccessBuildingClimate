@@ -23,6 +23,9 @@
 # change permissions on setup.sh
 chmod +x setup.sh
 
+#execute script
+sudo ./setup.sh
+
 
 #-------------------
 #-------------------
