@@ -10,7 +10,7 @@ from gpiozero import LED
 import smbus
 from time import sleep, ctime, time
 #creating a timestamp + hostname
-from os import uname
+from os import uname, environ
 import json
 
 #which dongle can be selected by args
@@ -18,6 +18,8 @@ import argparse
 
 parser = argparse.ArgumentParser(description='''SHT30dongle interface''')
 parser.add_argument("-st",dest="sensortype",default="wired",help="'wired' or 'dongle', default 'wired'")
+#parser.add_argument("-dst")
+parser.add_argument("-loc",default="unknown")
 args=parser.parse_args()
 
 # define the colors
@@ -59,8 +61,26 @@ class SHT30_dongle():
             "temperature":temp,
             "humidity":hum,
             "timestamp":timestamp,
+            "location":args.loc,
             "hostname":hostname
         })
+    
+    def log_clima_dict(self):
+        #post the clim data in json format
+        self._update_temp_hum()
+        temp = self._temp
+        hum = self._hum
+        stringtime = ctime()
+        timestamp = time()
+        hostname = uname()[1]
+        return {
+            "time":stringtime,
+            "temperature":temp,
+            "humidity":hum,
+            "timestamp":timestamp,
+            "location":args.loc,
+            "hostname":hostname
+        }
 
     def _update_temp_hum(self):
         # reads the temp and hum from the SHT30 dongle
@@ -116,4 +136,5 @@ class SHT30_dongle():
 if __name__ == "__main__":
     sensor=SHT30_dongle()
     sensor.led_blink()
-    print(sensor.log_clima())
+    #with open(args.loc+".txt","a") as file: 
+    #    file.write(sensor.log_clima())

@@ -1,3 +1,6 @@
-#!/bin/sh
-#/usr/bin/python3 /home/pi/Desktop/dongleSHT30.py >> /mnt/officelog/rasp5_2log.txt
-/usr/bin/python3 dongleSHT30.py -st wired
+#!/bin/bash
+source /etc/profile.d/mydongle.sh
+#destination="$DONGLELOGDEST"
+sensorloc="$SENSORLOC"
+#/usr/bin/python3 logClima.py.py -dst "$destination" -loc "$sensorloc"
+/usr/bin/python3 logClima.py -loc "$sensorloc"
